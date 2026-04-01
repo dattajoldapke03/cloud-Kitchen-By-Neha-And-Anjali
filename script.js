@@ -1,13 +1,19 @@
-// SHOW PAGE
+// PAGE CONTROL
 function showPage(id){
   document.querySelectorAll(".page").forEach(p=>p.style.display="none");
   document.getElementById(id).style.display="block";
-
-  document.querySelector(".top-bar").style.display =
-  (id==="loginPage")?"none":"flex";
 }
 
-window.onload=()=>showPage("loginPage");
+window.onload=()=>{
+  showPage("loginPage");
+
+  document.querySelectorAll('input[name="pay"]').forEach(r=>{
+    r.addEventListener("change",()=>{
+      document.getElementById("upiBox").style.display =
+      (r.value==="UPI")?"block":"none";
+    });
+  });
+};
 
 // LOGIN
 function login(){
@@ -15,14 +21,19 @@ function login(){
   displayProducts(products);
 }
 
-function logout(){ showPage("loginPage"); }
+function logout(){
+  showPage("loginPage");
+}
 
-// PRODUCTS
+// PRODUCTS (sample + tum aur add kar sakte ho)
 const products=[
-{name:"Paneer Butter Masala",price:180,img:"https://www.ruchiskitchen.com/wp-content/uploads/2020/12/Paneer-butter-masala-recipe-3-480x270.jpg",category:"veg"},
-{name:"Dal Tadka",price:120,img:"https://www.scrumptiously.com/wp-content/uploads/2024/10/MoongDalTadka.webp",category:"veg"},
-{name:"Aloo Paratha",price:80,img:"https://i0.wp.com/smithakalluraya.com/wp-content/uploads/2015/02/image.1024x1024-95.jpg",category:"paratha"},
-{name:"Paneer Paratha",price:100,img:"https://kashkandhaba.com/wp-content/uploads/2025/07/IMG_20240724_195502-1024x576-1.jpg",category:"paratha"}
+{name:"Paneer Butter Masala",price:180,img:"https://via.placeholder.com/150?text=Paneer",category:"veg"},
+{name:"Dal Tadka",price:120,img:"https://via.placeholder.com/150?text=Dal",category:"veg"},
+{name:"Aloo Paratha",price:80,img:"https://via.placeholder.com/150?text=Paratha",category:"paratha"},
+{name:"Chicken Biryani",price:220,img:"https://via.placeholder.com/150?text=Biryani",category:"nonveg"},
+{name:"Pizza",price:180,img:"https://via.placeholder.com/150?text=Pizza",category:"snacks"},
+{name:"Cold Coffee",price:80,img:"https://via.placeholder.com/150?text=Coffee",category:"drinks"},
+{name:"Ice Cream",price:90,img:"https://via.placeholder.com/150?text=IceCream",category:"desserts"}
 ];
 
 // DISPLAY
@@ -40,100 +51,122 @@ function displayProducts(list){
   document.getElementById("products").innerHTML=html;
 }
 
-function filterCat(c){
-  displayProducts(products.filter(p=>p.category===c));
-}
-
-function searchFood(){
-  let v=document.getElementById("search").value.toLowerCase();
-  displayProducts(products.filter(p=>p.name.toLowerCase().includes(v)));
+// FILTER
+function filterCat(cat){
+  displayProducts(products.filter(p=>p.category===cat));
 }
 
 // CART
-let cart=[];
+let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
 function addToCart(p){
-  let f=cart.find(i=>i.name===p.name);
-  if(f){ f.qty++; }
-  else{ cart.push({...p,qty:1}); }
+  cart.push(p);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  alert("Added to cart");
 }
 
 function viewCart(){
   showPage("cartPage");
 
-  let html="",total=0;
-
-  cart.forEach((p,i)=>{
-    let sub=p.price*p.qty;
-    total+=sub;
-
+  let html="";
+  cart.forEach(p=>{
     html+=`
-    <div class="cart-item">
-      <div class="cart-left">
-        <img src="${p.img}">
-        <div>
-          ${p.name}<br>
-          <div class="qty-box">
-            <button onclick="decrease(${i})">-</button>
-            ${p.qty}
-            <button onclick="increase(${i})">+</button>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        ₹${sub}<br>
-        <button onclick="removeItem(${i})">Remove</button>
-      </div>
+    <div style="display:flex;align-items:center;margin:10px;">
+      <img src="${p.img}" style="width:60px;height:60px;margin-right:10px;">
+      <div>${p.name} - ₹${p.price}</div>
     </div>`;
   });
 
   document.getElementById("cartItems").innerHTML=html;
-  document.getElementById("total").innerHTML=
-  `Total ₹${total}<br>
-   <button onclick="goPayment()">Checkout</button>`;
 }
 
-function increase(i){ cart[i].qty++; viewCart(); }
-function decrease(i){ cart[i].qty>1?cart[i].qty--:cart.splice(i,1); viewCart(); }
-function removeItem(i){ cart.splice(i,1); viewCart(); }
-
-function goPayment(){ showPage("paymentPage"); }
-
-// PAYMENT
+// ORDER + BILL
 function placeOrder(){
+  let name = prompt("Enter your name:");
   let address=document.getElementById("address").value;
-  let method=document.querySelector('input[name="pay"]:checked').value;
-  let upi=document.getElementById("upi").value;
+  let pay=document.querySelector('input[name="pay"]:checked');
 
-  if(address===""){ alert("Enter address"); return; }
-  if(method==="UPI" && !upi.includes("@")){
-    alert("Invalid UPI ID"); return;
+  if(!name){ alert("Enter name"); return; }
+  if(!address){ alert("Enter address"); return; }
+  if(!pay){ alert("Select payment"); return; }
+
+  if(pay.value==="UPI"){
+    let upi=document.getElementById("upi").value;
+    if(!upi.includes("@")){
+      alert("Invalid UPI ID");
+      return;
+    }
   }
 
-  generateBill(address,method);
-}
+  let total=0;
+  let rows="";
 
-// BILL
-function generateBill(address,method){
-  let total=0,rows="";
-
-  cart.forEach(p=>{
-    let sub=p.price*p.qty;
-    total+=sub;
-    rows+=`<tr><td>${p.name} x ${p.qty}</td><td>₹${sub}</td></tr>`;
+  cart.forEach((p,i)=>{
+    total+=p.price;
+    rows+=`
+      <tr>
+        <td>${i+1}</td>
+        <td>${p.name}</td>
+        <td>1</td>
+        <td>₹${p.price}</td>
+      </tr>
+    `;
   });
 
-  document.getElementById("bill").innerHTML=`
-  <div class="bill-box">
-    <h2>Order Bill</h2>
-    <p>Address: ${address}</p>
-    <p>Payment: ${method}</p>
-    <table>${rows}</table>
-    <h3>Total ₹${total}</h3>
-    <button onclick="showPage('homePage')">Home</button>
-  </div>`;
+  let gst = Math.round(total * 0.05);
+  let finalTotal = total + gst;
+
+  let orderId = "NF" + Math.floor(Math.random()*100000);
+  let date = new Date().toLocaleString();
+
+  let billHTML=`
+    <div style="max-width:600px;margin:auto;padding:20px;border:2px solid #000;border-radius:10px;">
+      <h2 style="text-align:center;">Neha Food App</h2>
+      <p><b>Name:</b> ${name}</p>
+      <p><b>Order ID:</b> ${orderId}</p>
+      <p><b>Date:</b> ${date}</p>
+      <p><b>Address:</b> ${address}</p>
+
+      <table border="1" width="100%">
+        <tr><th>#</th><th>Item</th><th>Qty</th><th>Price</th></tr>
+        ${rows}
+      </table>
+
+      <p>Subtotal: ₹${total}</p>
+      <p>GST: ₹${gst}</p>
+      <h3>Total: ₹${finalTotal}</h3>
+    </div>
+  `;
+
+  document.getElementById("bill").innerHTML=billHTML;
+
+  let orders=JSON.parse(localStorage.getItem("orders"))||[];
+  orders.push({name,total:finalTotal});
+  localStorage.setItem("orders",JSON.stringify(orders));
+
+  cart=[];
+  localStorage.removeItem("cart");
 
   showPage("billPage");
-  cart=[];
+}
+
+// PRINT
+function printBill(){
+  let content=document.getElementById("bill").innerHTML;
+  let win=window.open("");
+  win.document.write(content);
+  win.print();
+}
+
+// ADMIN
+function openAdmin(){
+  showPage("adminPage");
+
+  let orders=JSON.parse(localStorage.getItem("orders"))||[];
+  let html="";
+  orders.forEach((o,i)=>{
+    html+=`<p>${i+1}. ${o.name} - ₹${o.total}</p>`;
+  });
+
+  document.getElementById("orders").innerHTML=html;
 }
