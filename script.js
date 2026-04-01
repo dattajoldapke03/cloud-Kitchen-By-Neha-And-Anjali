@@ -1,4 +1,4 @@
-```javascript
+
 // PAGE CONTROL
 function showPage(id){
   document.querySelectorAll(".page").forEach(p=>p.style.display="none");
@@ -196,4 +196,3 @@ function openAdmin(){
 
   document.getElementById("orders").innerHTML=html;
 }
-```
