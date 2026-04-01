@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Neha And Anjali's Cloud Kitchen</title>
+  <title>Cloud Kitchen</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="top-bar">
@@ -24,15 +25,13 @@
 <div id="homePage" class="page">
   <h2>Food Menu</h2>
 
-  <div>
-    <button onclick="displayProducts(products)">All</button>
-    <button onclick="filterCat('veg')">Veg</button>
-    <button onclick="filterCat('paratha')">Paratha</button>
-    <button onclick="filterCat('nonveg')">NonVeg</button>
-    <button onclick="filterCat('snacks')">Snacks</button>
-    <button onclick="filterCat('drinks')">Drinks</button>
-    <button onclick="filterCat('desserts')">Desserts</button>
-  </div>
+  <button onclick="displayProducts(products)">All</button>
+  <button onclick="filterCat('veg')">Veg</button>
+  <button onclick="filterCat('paratha')">Paratha</button>
+  <button onclick="filterCat('nonveg')">NonVeg</button>
+  <button onclick="filterCat('snacks')">Snacks</button>
+  <button onclick="filterCat('drinks')">Drinks</button>
+  <button onclick="filterCat('desserts')">Desserts</button>
 
   <div id="products"></div>
 </div>
@@ -42,7 +41,6 @@
   <h2>Cart</h2>
   <div id="cartItems"></div>
 
-  <h3>Address</h3>
   <input id="address" placeholder="Enter address">
 
   <h3>Payment</h3>
@@ -51,6 +49,7 @@
 
   <div id="upiBox" style="display:none;">
     <input id="upi" placeholder="Enter UPI ID">
+    <p id="upiError" style="color:red;display:none;">❌ Invalid UPI ID</p>
   </div>
 
   <button onclick="placeOrder()">Place Order</button>
@@ -60,8 +59,7 @@
 <div id="billPage" class="page">
   <h2>Invoice</h2>
   <div id="bill"></div>
-  <button onclick="printBill()">🖨️ Print Bill</button>
-  <button onclick="showPage('homePage')">Go to Home</button>
+  <button onclick="printBill()">Print</button>
 </div>
 
 <!-- ADMIN -->
