@@ -86,10 +86,10 @@ const products = [
 {name:"Iced Tea",price:70,img:"https://bakingamoment.com/wp-content/uploads/2024/05/IMG_3367-iced-tea.jpg",category:"drinks"},
 
 /* DESSERTS */
-{name:"Gulab Jamun",price:60,img:"https://www.awesomecuisine.com/wp-content/uploads/2014/10/rasgulla-500x375.jpg",category:"desserts"},
+{name:"Gulab Jamun",price:60,img:"https://i.postimg.cc/hGBhL3FB/soft-gulab-jamun-recipe-for-raksha-bandhan-from-dough-to-syrup-all-you-need-to-know.webp",category:"desserts"},
 {name:"Rasgulla",price:70,img:"https://www.awesomecuisine.com/wp-content/uploads/2014/10/rasgulla-500x375.jpg",category:"desserts"},
 {name:"Chocolate Cake",price:120,img:"https://static.toiimg.com/thumb/53096885.cms?imgsize=1572013&width=800&height=800",category:"desserts"},
-{name:"Ice Cream",price:90,img:"https://www.cookwithmanali.com/wp-content/uploads/2021/05/Vanilla-Ice-Cream.jpg",category:"desserts"},
+{name:"Ice Cream",price:90,img:"https://i.postimg.cc/4xTXq7Wc/AR-RM-233928-how-to-make-vanilla-ice-cream-ddmfs-3x4-c5b61f092fe14296b52ca364b1446800.jpg",category:"desserts"},
 {name:"Brownie",price:100,img:"https://i.pinimg.com/736x/22/d0/2c/22d02c3cbb0b2ba46f0089b6c94821fa.jpg",category:"desserts"},
 {name:"Cupcake",price:80,img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIPktfJtoCpcxH5PEispcMDg8I6mWXKDVtqw&s",category:"desserts"},
 {name:"Donut",price:70,img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWnVUn7rFHDh56GEoMCCXeQzKNbCg-PLKvUQ&s",category:"desserts"},
