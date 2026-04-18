@@ -19,7 +19,7 @@ window.onload = () => showPage("loginPage");
 function login() {
   showPage("homePage");
   displayProducts(products);
-  showToast("Welcome Back! 👨‍🍳");
+  showToast("Welcome Back To NAC Kitchen ! 👨‍🍳");
 }
 
 function logout() { cart = []; showPage("loginPage"); }
